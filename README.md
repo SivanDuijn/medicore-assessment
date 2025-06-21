@@ -1,8 +1,3 @@
-
-overzicht van een jaar voor elke employee
-
-geen streamedresponse
-
 # Medicore job application assessment
 
 This is a Symfony 7.3 + API Platform application for the Medicore job application assessment.
