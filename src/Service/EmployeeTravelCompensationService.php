@@ -4,16 +4,40 @@ namespace App\Service;
 
 use App\Entity\Employee;
 use App\Enum\TransportType;
+use App\Model\MonthlyTravelCompensation;
 use DateTime;
 
 class EmployeeTravelCompensationService
 {
-    /**
-     * @param Employee $employee
-     * @param int $year The year for which to calculate the monthly cost
-     * @param int $month The month for which to calculate the costs, starting at 1 (january)
-     * @return float The compensation in euro's for the specified month
-     */
+
+    /** @return MonthlyTravelCompensation[] */
+    public function calculateYearlyTravelCompensation(Employee $employee, int $year): array
+    {
+        $months = [];
+
+        // Loop over all months in a year and calculate the travel compensation for each employee
+        for ($month = 0; $month < 12; $month++) {
+            // Since the payment date is on the first day of the next month we start in december and end november
+            $date = new DateTime("$year-$month-01");
+            $paymentDate = (new DateTime("$year-$month-01"))->modify('+1 month');
+            $distanceTravelledKm =
+                $this->calculateMonthlyDistanceTravelledKm($employee, $date);
+
+            $compensation =
+                $this->calculateTravelCompensation($employee, $distanceTravelledKm);
+
+            $months[] = new MonthlyTravelCompensation(
+                round($distanceTravelledKm, 2),
+                round($compensation, 2),
+                $date,
+                $paymentDate
+            );
+        }
+
+        return $months;
+    }
+
+    /** @return float The compensation in euro's for the specified distance the employee has travelled. */
     public function calculateTravelCompensation(Employee $employee, float $distanceTraveledKm): float
     {
         $compensationPerKm =
@@ -22,7 +46,8 @@ class EmployeeTravelCompensationService
         return $distanceTraveledKm * $compensationPerKm;
     }
 
-    public function calculateMonthlyDistanceTravelledKm($employee, DateTime $date): float
+    /** @return float The total distance an employee has had to travel to reach work for current month in the provided date. */
+    public function calculateMonthlyDistanceTravelledKm(Employee $employee, DateTime $date): float
     {
         $daysInMonth = (float)$date->format('t');
         $weeksInMonth = $daysInMonth / 7;
