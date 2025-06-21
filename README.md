@@ -13,6 +13,8 @@ Because of this, the compensation amount may not be the same for each month, and
 For example, a month that starts and ends on a weekend will have fewer workdays, the employee will have traveled less during that month.
 Over the course of a full year, this variation should balance out, resulting in a correct total compensation.
 
+The yearly overview begins with a payment date of January 1st, which means the corresponding compensation calculations for the first month are based on December.
+
 I hope these assumptions are ok.
 
 ## Tools and libraries used
@@ -26,8 +28,8 @@ I hope these assumptions are ok.
 
 ## Setup Instructions
 
-- Install dependencies: `composer install`
 - Configure environment: `cp .env.example .env`
+- Install dependencies: `composer install`
 - Create database: <br>
 `php bin/console doctrine:database:create`
 - Run migrations to create Employee table and load in provided employee data: <br>
