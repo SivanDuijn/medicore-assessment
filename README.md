@@ -6,7 +6,7 @@ It provides a simple Employee database with an endpoint to download a CSV file w
 ## Assumptions
 
 I've made the assumption here that the CSV file should contain information for each employee for each month of the current year.
-This results in multiple rows with for the same employee but does give a nice overview for the whole year.
+This results in multiple rows for the same employee but does give a nice overview for the whole year.
 
 I’ve made another assumption on how to calculate compensation costs: they are based on the average number of workdays in a given month, derived from the number of weeks in that month.
 Because of this, the compensation amount may not be the same for each month, and the number of actual workdays can differ. 
